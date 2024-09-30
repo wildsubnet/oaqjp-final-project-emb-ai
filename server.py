@@ -1,13 +1,8 @@
 # Import Flask, render_template, request from the flask pramework package :
-
 from flask import Flask, render_template, request
-
 # Import the emotion_detection function from the package created:
-
 from EmotionDetection.emotion_detection import emotion_detector
-
 #Initiate the flask app :
-
 app = Flask("Emotion Detector")
 
 @app.route("/emotionDetector")
@@ -22,12 +17,15 @@ def sent_detector():
 
     # Pass the text to emotion_detector function and store the response
     response = emotion_detector(text_to_analyze)
-    response_str = f"For the given statement, the system response is 'anger': {response['anger']}, "
-    response_str +=  f"'disgust': {response['disgust']}, "
-    response_str +=  f"'fear': {response['fear']}, "
-    response_str +=  f"'joy': {response['joy']}, "
-    response_str +=  f"'sadness': {response['sadness']}. "
-    response_str +=  f"'The dominant emotion is <b>{response['dominant_emotion']}</b>."
+    if response['dominant_emotion'] is None:
+        response_str = f"<b>Invalid text! Please try again.</b>"
+    else:
+        response_str = f"For the given statement, the system response is 'anger': {response['anger']}, "
+        response_str +=  f"'disgust': {response['disgust']}, "
+        response_str +=  f"'fear': {response['fear']}, "
+        response_str +=  f"'joy': {response['joy']}, "
+        response_str +=  f"'sadness': {response['sadness']}. "
+        response_str +=  f"'The dominant emotion is <b>{response['dominant_emotion']}</b>."
     return response_str
 
 @app.route("/")

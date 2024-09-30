@@ -8,16 +8,16 @@ def emotion_detector(text_to_analyze):
     myobj = { "raw_document": { "text": text_to_analyze } }
     response = requests.post(url, json = myobj, headers=header)  # Send a POST request to the API with the text and headers
     fmt_response = json.loads(response.text)
-    emotions=fmt_response['emotionPredictions'][0]['emotion']
-    dom_emote = ''
-    dom_score = 0
-    #print("{")
-    for emote,score in emotions.items():
-        #print(f"'{emote}': {score},")
-        if score > dom_score:
-            dom_emote = emote
-            dom_score = score
-    emotions['dominant_emotion']=dom_emote
-    #print(f"'dominant_emotion': '{dom_emote}'")
-    #print("}")
+
+    if response.status_code == 200:
+        emotions=fmt_response['emotionPredictions'][0]['emotion']
+        dom_emote = ''
+        dom_score = 0
+        for emote,score in emotions.items():
+            if score > dom_score:
+                dom_emote = emote
+                dom_score = score
+        emotions['dominant_emotion']=dom_emote
+    elif response.status_code == 400:
+        emotions={'anger': None, 'disgust': None, 'fear': None, 'joy': None, 'sadness': None, 'dominant_emotion': None}
     return emotions
