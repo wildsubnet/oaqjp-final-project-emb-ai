@@ -11,12 +11,13 @@ def emotion_detector(text_to_analyze):
     emotions=fmt_response['emotionPredictions'][0]['emotion']
     dom_emote = ''
     dom_score = 0
-    print("{")
+    #print("{")
     for emote,score in emotions.items():
-        print(f"'{emote}': {score},")
+        #print(f"'{emote}': {score},")
         if score > dom_score:
             dom_emote = emote
             dom_score = score
     emotions['dominant_emotion']=dom_emote
-    print(f"'dominant_emotion': '{dom_emote}'")
-    print("}")
+    #print(f"'dominant_emotion': '{dom_emote}'")
+    #print("}")
+    return emotions
